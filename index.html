@@ -4,52 +4,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>የዝውውር ነጥብ ማሰያ - በበረከት ቀናው</title>
+    <title>የዝውውር ነጥብ ማሰያ - በረከት ቀናው</title>
+    
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlllenV3dXVyIE5ldGliaCBNYXNheWEiLAogICJzaG9ydF9uYW1lIjogIk5ldGliaCBNYXNheWEiLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2Y4ZjlhYSIsCiAgInRoZW1lX2NvbG9yIjogIiMxYTczZTgiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2Nkbi1pY29ucy1wbmcuZmxhdGljb24uY29tLzUxMi8yNjkzLzI2OTM1MjkucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9">
+    <meta name="theme-color" content="#1a73e8">
+
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); width: 90%; max-width: 400px; position: relative; }
-        h2 { color: #1a73e8; text-align: center; margin-bottom: 25px; }
-        label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; }
-        input { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
-        button { width: 100%; background-color: #1a73e8; color: white; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button:hover { background-color: #1557b0; }
-        #result { margin-top: 25px; padding: 15px; border-radius: 8px; text-align: center; font-size: 18px; font-weight: bold; display: none; background-color: #e8f0fe; color: #1967d2; }
-        .footer { margin-top: 30px; text-align: center; font-size: 14px; color: #777; border-top: 1px solid #eee; padding-top: 15px; font-style: italic; }
-        .footer b { color: #1a73e8; }
+        :root {
+            --primary-color: #1a73e8;
+            --success-color: #28a745;
+            --bg-color: #f0f2f5;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .app-card {
+            background: white;
+            width: 100%;
+            max-width: 480px;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .input-box {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #444;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e4e8;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .calc-btn {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .calc-btn:active {
+            transform: scale(0.98);
+        }
+
+        #result-display {
+            margin-top: 25px;
+            padding: 20px;
+            background: #e7f3ff;
+            border-left: 5px solid var(--primary-color);
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+        }
+
+        #result-display h2 {
+            margin: 0;
+            color: #0056b3;
+            font-size: 28px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #777;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        /* Install Prompt */
+        #pwa-banner {
+            position: fixed;
+            bottom: 20px;
+            background: #333;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            max-width: 400px;
+            z-index: 100;
+        }
+        
+        #pwa-banner button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>የዝውውር ነጥብ ማሰያ</h2>
-        <label>የአገልግሎት ዘመን (በዓመት)፦</label>
-        <input type="number" id="serviceYear" placeholder="ምሳሌ፦ 8">
-        
-        <label>የውጤት አማካይ (100%)፦</label>
-        <input type="number" id="efficiency" placeholder="ምሳሌ፦ 85">
-        
-        <button onclick="calculateScore()">ነጥብ አስላ</button>
-        <div id="result"></div>
 
-        <div class="footer">
-            በ<b>በረከት ቀናው</b> የተዘጋጀ
+    <div id="pwa-banner">
+        <span>አፑን ስልክዎ ላይ ይጫኑ</span>
+        <button onclick="installApp()">ጫን (Install)</button>
+    </div>
+
+    <div class="app-card">
+        <header>
+            <h1>የዝውውር ነጥብ ማሰያ</h1>
+            <p style="font-size: 12px; color: #888;">በአዲሱ የትምህርት ሚኒስቴር መመሪያ መሠረት</p>
+        </header>
+
+        <div class="input-box">
+            <label>የአገልግሎት ዘመን (በዓመት) - [40%]</label>
+            <input type="number" id="serviceYears" placeholder="ምሳሌ፦ 5">
         </div>
+
+        <div class="input-box">
+            <label>የሥራ አፈጻጸም ውጤት (100%) - [25%]</label>
+            <input type="number" id="efficiency" placeholder="ምሳሌ፦ 85">
+        </div>
+
+        <div class="input-box">
+            <label>የትምህርት ዝግጅት ነጥብ - [15%]</label>
+            <input type="number" id="eduScore" placeholder="ምሳሌ፦ 12">
+        </div>
+
+        <div class="input-box">
+            <label>የጋብቻ ሁኔታ - [15%]</label>
+            <select id="marriage">
+                <option value="0">ያልተጋባ / ማስረጃ የሌለው (0)</option>
+                <option value="15">ያገባ/ች - የትዳር አጋርን ለመቀላቀል (15)</option>
+            </select>
+        </div>
+
+        <div class="input-box">
+            <label>የዲሲፕሊን ሁኔታ - [5%]</label>
+            <select id="discipline">
+                <option value="5">ምንም ዓይነት ቅጣት የሌለበት (5)</option>
+                <option value="0">የዲሲፕሊን ቅጣት ያለበት (0)</option>
+            </select>
+        </div>
+
+        <button class="calc-btn" onclick="calculate()">ነጥብ አስላ</button>
+
+        <div id="result-display">
+            <p style="margin-bottom: 5px; font-weight: 500;">ጠቅላላ የዝውውር ውጤትዎ</p>
+            <h2 id="finalScore">0.00</h2>
+            <p style="font-size: 12px; color: #555;">ከ 100% ድምር</p>
+        </div>
+
+        <footer>
+            በበረከት ቀናው የተዘጋጀ
+        </footer>
     </div>
 
     <script>
-        function calculateScore() {
-            const service = document.getElementById('serviceYear').value;
-            const efficiency = document.getElementById('efficiency').value;
-            const resultDiv = document.getElementById('result');
+        let deferredPrompt;
 
-            if (!service || !efficiency) {
-                alert("እባክዎ መረጃዎችን በትክክል ይሙሉ");
-                return;
-            }
+        function calculate() {
+            // መረጃዎችን መሰብሰብ
+            let service = parseFloat(document.getElementById('serviceYears').value) || 0;
+            let efficiency = parseFloat(document.getElementById('efficiency').value) || 0;
+            let education = parseFloat(document.getElementById('eduScore').value) || 0;
+            let marriage = parseFloat(document.getElementById('marriage').value) || 0;
+            let discipline = parseFloat(document.getElementById('discipline').value) || 0;
 
-            const total = (parseFloat(service) * 2) + (parseFloat(efficiency) * 0.5);
+            // የነጥብ ቀመሮች
+            let sPoints = Math.min((service * 4), 40); // 1 አመት = 4 ነጥብ
+            let ePoints = (efficiency * 25) / 100;    // ከ 25%
             
-            resultDiv.style.display = "block";
-            resultDiv.innerHTML = "የእርስዎ ጠቅላላ ነጥብ፦ " + total.toFixed(2);
+            let total = sPoints + ePoints + education + marriage + discipline;
+
+            // ውጤቱን ማሳየት
+            let display = document.getElementById('result-display');
+            display.style.display = 'block';
+            document.getElementById('finalScore').innerText = total.toFixed(2);
+            
+            display.scrollIntoView({behavior: "smooth"});
+        }
+
+        // PWA Install Logic
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('pwa-banner').style.display = 'flex';
+        });
+
+        async function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                document.getElementById('pwa-banner').style.display = 'none';
+            }
+        }
+
+        // Offline ስራ እንዲሰራ
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGZ1bmN0aW9uKGV2ZW50KSB7IH0pOw==');
+            });
         }
     </script>
 </body>
